@@ -5,7 +5,7 @@ export function createErrorList(errors) {
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
 
-    for (const label of ["Item", "Property", "Expected", "Received"]) {
+    for (const label of ["Type", "Name", "Property", "Expected", "Received"]) {
         const th = document.createElement("th");
         th.scope = "col";
         th.textContent = label;
@@ -20,26 +20,35 @@ export function createErrorList(errors) {
     for (const error of errors) {
         const row = document.createElement("tr");
 
-        const itemCell = document.createElement("td");
-        itemCell.className = "error-item";
-
-        const itemName = error.item_name || error.item_id || "Unknown item";
+        // Type
+        const typeCell = document.createElement("td");
         const itemType = error.item_type || "Item";
 
-        itemCell.textContent = `${itemType}: ${itemName}`;
+        typeCell.textContent =
+            itemType.charAt(0).toUpperCase() + itemType.slice(1);
 
+        // Name
+        const nameCell = document.createElement("td");
+        nameCell.className = "error-item";
+        nameCell.textContent =
+            error.item_name || error.item_id || "Unknown item";
+
+        // Property
         const fieldCell = document.createElement("td");
         fieldCell.textContent = error.field || "Unknown field";
 
+        // Expected
         const expectedCell = document.createElement("td");
         expectedCell.textContent = formatValue(error.expected);
 
+        // Received
         const actualCell = document.createElement("td");
         actualCell.className = "actual-value";
         actualCell.textContent = formatValue(error.actual);
 
         row.append(
-            itemCell,
+            typeCell,
+            nameCell,
             fieldCell,
             expectedCell,
             actualCell
