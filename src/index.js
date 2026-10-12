@@ -1,6 +1,4 @@
 import "./styles.css";
+import createApp from "./components/CreateApp";
 
-const button = document.querySelector("button");
-button.addEventListener("click", () => {
-    document.body.classList.toggle("light");
-})
+createApp()
