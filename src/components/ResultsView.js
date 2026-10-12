@@ -2,44 +2,49 @@ import { createPageResults } from "./PageResults.js";
 
 export function createResultsView(result) {
     const container = document.createElement("div");
+    container.className = "results-view";
 
-    const summary = document.createElement("section");
+    const summary = result.summary ?? {};
+    const pages = Array.isArray(result.pages) ? result.pages : [];
 
-    const summaryHeading = document.createElement("h2");
-    summaryHeading.textContent = "Summary";
+    const totalErrors = summary.total_errors ?? 0;
+    const pagesProcessed = summary.pages_processed ?? pages.length;
 
-    const status = document.createElement("p");
-    status.textContent = `Status: ${result.status ?? "Unknown"}`;
+    const pagesWithErrors = pages.filter(
+        (page) => (page.errors?.length ?? 0) > 0
+    ).length;
 
-    const pagesProcessed = document.createElement("p");
-    pagesProcessed.textContent =
-        `Pages processed: ${result.summary?.pages_processed ?? 0}`;
+    const pagesPassed = pages.length - pagesWithErrors;
 
-    const totalErrors = document.createElement("p");
-    totalErrors.textContent =
-        `Total errors: ${result.summary?.total_errors ?? 0}`;
+    const heading = document.createElement("h2");
+    heading.textContent = "Review Results";
 
-    summary.append(
-        summaryHeading,
-        status,
-        pagesProcessed,
-        totalErrors
+    const subtitle = document.createElement("p");
+    subtitle.className = "results-subtitle";
+    subtitle.textContent = "Drawing review complete";
+
+    const overview = document.createElement("section");
+    overview.className = "results-overview";
+
+    overview.append(
+        createSummaryCard("Pages Processed", pagesProcessed),
+        createSummaryCard("Pages Passed", pagesPassed),
+        createSummaryCard("Total Errors", totalErrors, "error")
     );
 
-    container.append(summary);
+    container.append(heading, subtitle, overview);
 
     const pagesHeading = document.createElement("h2");
     pagesHeading.textContent = "Page Results";
+    pagesHeading.className = "page-results-heading";
 
     container.append(pagesHeading);
 
-    const pages = Array.isArray(result.pages) ? result.pages : [];
-
     if (pages.length === 0) {
-        const emptyMessage = document.createElement("p");
-        emptyMessage.textContent = "The API returned no page results.";
+        const message = document.createElement("p");
+        message.textContent = "No page results were returned.";
+        container.append(message);
 
-        container.append(emptyMessage);
         return container;
     }
 
@@ -48,4 +53,21 @@ export function createResultsView(result) {
     }
 
     return container;
+}
+
+function createSummaryCard(label, value, variant = "") {
+    const card = document.createElement("article");
+    card.className = `summary-card ${variant}`.trim();
+
+    const cardLabel = document.createElement("p");
+    cardLabel.className = "summary-card-label";
+    cardLabel.textContent = label;
+
+    const cardValue = document.createElement("p");
+    cardValue.className = "summary-card-value";
+    cardValue.textContent = String(value);
+
+    card.append(cardLabel, cardValue);
+
+    return card;
 }

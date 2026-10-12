@@ -25,7 +25,7 @@ export function createUploadForm({ onSubmit }) {
 
     const submitButton = document.createElement("button");
     submitButton.type = "submit";
-    submitButton.textContent = "Run QA/QC Check";
+    submitButton.textContent = "Run Checker";
 
     form.append(pdfLabel, sourceLabel, submitButton);
 

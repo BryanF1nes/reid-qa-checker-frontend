@@ -1,36 +1,61 @@
 export function createErrorList(errors) {
-    const list = document.createElement("ul");
-    list.className = "error-list";
+    const table = document.createElement("table");
+    table.className = "error-table";
 
-    for (const error of errors) {
-        const item = document.createElement("li");
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
 
-        const title = document.createElement("strong");
+    for (const label of ["Item", "Property", "Expected", "Received"]) {
+        const th = document.createElement("th");
+        th.scope = "col";
+        th.textContent = label;
 
-        const itemName = error.item_name || error.item_id || "Unknown item";
-
-        title.textContent = error.item_type
-            ? `${error.item_type}: ${itemName}`
-            : itemName;
-
-        const details = document.createElement("p");
-
-        const field = error.field || "Unknown field";
-
-        details.textContent =
-            `${field} — Expected: ${formatValue(error.expected)}; ` +
-            `Actual: ${formatValue(error.actual)}`;
-
-        item.append(title, details);
-        list.append(item);
+        headerRow.append(th);
     }
 
-    return list;
+    thead.append(headerRow);
+
+    const tbody = document.createElement("tbody");
+
+    for (const error of errors) {
+        const row = document.createElement("tr");
+
+        const itemCell = document.createElement("td");
+        itemCell.className = "error-item";
+
+        const itemName = error.item_name || error.item_id || "Unknown item";
+        const itemType = error.item_type || "Item";
+
+        itemCell.textContent = `${itemType}: ${itemName}`;
+
+        const fieldCell = document.createElement("td");
+        fieldCell.textContent = error.field || "Unknown field";
+
+        const expectedCell = document.createElement("td");
+        expectedCell.textContent = formatValue(error.expected);
+
+        const actualCell = document.createElement("td");
+        actualCell.className = "actual-value";
+        actualCell.textContent = formatValue(error.actual);
+
+        row.append(
+            itemCell,
+            fieldCell,
+            expectedCell,
+            actualCell
+        );
+
+        tbody.append(row);
+    }
+
+    table.append(thead, tbody);
+
+    return table;
 }
 
 function formatValue(value) {
     if (value === null || value === undefined || value === "") {
-        return "(no value)";
+        return "No value";
     }
 
     return String(value);

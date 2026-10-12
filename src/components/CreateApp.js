@@ -43,6 +43,8 @@ export default function createApp() {
                 resultsContainer.append(createResultsView(result));
             } catch (error) {
                 status.textContent = `Error: ${error.message}`;
+            } finally {
+                uploadForm.reset()
             }
         },
     });
