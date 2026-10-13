@@ -11,7 +11,7 @@ export function createPageResults(page) {
     header.className = "page-results-header";
 
     const heading = document.createElement("h3");
-    heading.textContent = `Page ${page.page_number ?? "?"}`;
+    heading.textContent = `Sheet ${page.title_block.titleblock_sheet_number ?? "?"}`;
 
     const status = document.createElement("span");
     status.className = `page-status ${hasErrors ? "failed" : "passed"}`;
