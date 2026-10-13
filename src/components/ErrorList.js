@@ -5,7 +5,7 @@ export function createErrorList(errors) {
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
 
-    for (const label of ["Type", "Name", "Property", "Expected", "Received"]) {
+    for (const label of ["ID", "Name", "Property", "Expected", "Shown On PDF"]) {
         const th = document.createElement("th");
         th.scope = "col";
         th.textContent = label;
@@ -21,17 +21,13 @@ export function createErrorList(errors) {
         const row = document.createElement("tr");
 
         // Type
-        const typeCell = document.createElement("td");
-        const itemType = error.item_type || "Item";
-
-        typeCell.textContent =
-            itemType.charAt(0).toUpperCase() + itemType.slice(1);
-
+        const idCell = document.createElement("td");
+        idCell.textContent = error.item_id || "Item";
         // Name
         const nameCell = document.createElement("td");
         nameCell.className = "error-item";
         nameCell.textContent =
-            error.item_name || error.item_id || "Unknown item";
+            error.item_name || "Unknown item";
 
         // Property
         const fieldCell = document.createElement("td");
@@ -47,7 +43,7 @@ export function createErrorList(errors) {
         actualCell.textContent = formatValue(error.actual);
 
         row.append(
-            typeCell,
+            idCell,
             nameCell,
             fieldCell,
             expectedCell,
