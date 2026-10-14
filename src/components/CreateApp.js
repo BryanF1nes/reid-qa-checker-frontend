@@ -1,7 +1,7 @@
 import { createUploadForm } from "./UploadForm.js";
 import { createResultsView } from "./ResultsView.js";
 
-const API_URL = "http://127.0.0.1:8000/qa-check";
+const API_URL = "https://reid-qa-checker.onrender.com/qa-check";
 
 export default function createApp() {
     const app = document.querySelector("#app");
