@@ -22,6 +22,7 @@ export function createErrorList(errors) {
 
         // Type
         const idCell = document.createElement("td");
+        idCell.className = "error-id";
         idCell.textContent = error.item_id || "Item";
         // Name
         const nameCell = document.createElement("td");
